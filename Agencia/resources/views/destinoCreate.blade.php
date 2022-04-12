@@ -18,7 +18,10 @@
                 <label for="idRegion">Región</label>
                 <select name="idRegion" id="idRegion"
                         class="form-control" required>
-                    <option value="">Seleccione una región</option>
+                        <option value="">Seleccione Region</option>"
+                    @foreach ($regiones as $region)
+                    <option value="{{$region->idRegion}}">{{$region->regNombre}}</option>
+                    @endforeach
                 </select>
             </div>
 

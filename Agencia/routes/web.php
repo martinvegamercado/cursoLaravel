@@ -134,3 +134,9 @@ Route::get('/destinos', function () {
     //retorno join
     return view('destinos',[ 'destinos'=>$destinosJ ]);
 });
+
+Route::get('/destino/create', function () {
+    
+    $regionesd = DB::table('regiones')->get();
+    return view('destinoCreate',['regiones'=>$regionesd]);
+});
