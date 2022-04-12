@@ -117,6 +117,7 @@ Route::get('/region/delete/{id}', function ($id)
 
 
 ##### CRUD de destinos
+
 Route::get('/destinos', function () {
     //obtenemos listado de destinos
 
@@ -136,7 +137,7 @@ Route::get('/destinos', function () {
 });
 
 Route::get('/destino/create', function () {
-    
+    //paso las regiones para llenar el combo
     $regionesd = DB::table('regiones')->get();
     return view('destinoCreate',['regiones'=>$regionesd]);
 });
