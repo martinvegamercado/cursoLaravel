@@ -136,8 +136,73 @@ Route::get('/destinos', function () {
     return view('destinos',[ 'destinos'=>$destinosJ ]);
 });
 
-Route::get('/destino/create', function () {
+Route::get('destino/create', function () {
     //paso las regiones para llenar el combo
     $regionesd = DB::table('regiones')->get();
     return view('destinoCreate',['regiones'=>$regionesd]);
+});
+
+Route::post('destino/create', function () {
+    //inserto las regiones
+    $destNombre = request()->destNombre;
+    $idRegion = request()->idRegion;
+    $destPrecio  = request()->destPrecio;
+    $destAsientos = request()->destAsientos;
+    $destDisponibles = request()->destDisponibles;
+
+ /*DB::insert(
+                'INSERT INTO destinos
+                            ( destNombre )
+                        VALUE
+                            ( :destNombre ,  )',
+                [ $destNombre ]
+            );*/
+            DB::table('destinos')
+            ->insert([ 'destNombre'=>$destNombre , 'idRegion'=>$idRegion , 'destPrecio'=>$destPrecio ,'destAsientos'=>$destAsientos ,'destDisponibles'=>$destDisponibles]);
+    return redirect('/destinos')
+                ->with(['mensaje'=>'Destino  ' .$destNombre. ' agregado correctamente']);
+
+});
+
+Route::get('/destino/edit/{id}', function ($id) {
+    
+$destino = DB::table('destinos')->where('idDestino', $id)
+->join('regiones','destinos.idRegion','=','regiones.idRegion')
+->select('destinos.*','regiones.regNombre')
+->first();;
+
+
+
+$regionesd = DB::table('regiones')->get();
+return view('destinoEdit', [ 'destino' => $destino , 'regiones'=>$regionesd]);
+});
+
+Route::post('/destino/update', function () {
+
+    $idDestino = request()->idDestino;
+    $destNombre = request()->destNombre;
+    $idRegion = request()->idRegion;
+    $destPrecio  = request()->destPrecio;
+    $destAsientos = request()->destAsientos;
+    $destDisponibles = request()->destDisponibles;
+
+        DB::table('destinos')
+        ->where('idDestino',$idDestino)
+        ->update(['destNombre'=> $destNombre , 'idRegion'=>$idRegion , 'destPrecio'=>$destPrecio ,'destAsientos'=>$destAsientos ,'destDisponibles'=>$destDisponibles]);
+
+        return redirect('/destinos')
+        ->with(['mensaje'=>'Destino  ' .$destNombre. ' Modificado correctamente']);
+});
+
+Route::get('/destino/delete/{id}', function ($id)
+{    
+    //borrar region
+    /*DB::delete( 'DELETE FROM regiones
+                    WHERE idRegion = :idRegion',
+                [ $id]);*/
+    DB::table('destinos')
+        ->where( 'idDestino', $id )
+        ->delete();
+    return redirect('/destinos')
+        ->with(['mensaje'=>'Destino Eliminado Correctamente']);
 });
