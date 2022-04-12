@@ -46,7 +46,76 @@ Route::get('/regiones', function () {
     return view('regiones', [ 'regiones'=>$regiones ]);
 });
 
-route::post(function (){});
+Route::get('/region/create', function ()
+{
+    return view('regionCreate');
+});
+
+Route::post('/region/store', function ()
+{
+    $regNombre = request()->regNombre;
+    //insertamos en tabla regiones
+    /*DB::insert(
+                'INSERT INTO regiones
+                            ( regNombre )
+                        VALUE
+                            ( :regNombre )',
+                [ $regNombre ]
+            );*/
+    DB::table('regiones')
+            ->insert([ 'regNombre'=>$regNombre ]);
+
+    return redirect('/regiones')
+                ->with(['mensaje'=>'Región '.$regNombre.' agregada correctamente']);
+});
+
+Route::get('/region/edit/{id}', function ($id)
+{
+    //obtenemos datos de la región por su ID
+    /*$region = DB::select('SELECT idRegion, regNombre
+                            FROM regiones
+                            WHERE idRegion = :idRegion',
+                        [ $id ]);*/
+    $region = DB::table('regiones')
+                    ->where( 'idRegion', $id )
+                    ->first(); //fetch
+    //retornamos vista del formulario con sus datos cargados
+    return view('regionEdit', [ 'region' => $region ]);
+});
+
+Route::post('/region/update', function ()
+{
+    $idRegion  = request()->idRegion;
+    $regNombre = request()->regNombre;
+    /*DB::update( 'UPDATE regiones
+                    SET
+                        regNombre = :regNombre
+                    WHERE idRegion = :idRegion',
+                [ $regNombre, $idRegion ]);*/
+    DB::table('regiones')
+        ->where( 'idRegion', $idRegion )
+        ->update( [ 'regNombre'=>$regNombre ] );
+    return redirect('/regiones')
+        ->with(['mensaje'=>'Región '.$regNombre.' modificada correctamente']);
+});
+
+Route::get('/region/delete/{id}', function ($id)
+{    
+    //borrar region
+    /*DB::delete( 'DELETE FROM regiones
+                    WHERE idRegion = :idRegion',
+                [ $id]);*/
+    DB::table('regiones')
+        ->where( 'idRegion', $id )
+        ->delete();
+    return redirect('/regiones')
+        ->with(['mensaje'=>'Región Eliminada correctamente']);
+});
+
+
+
+
+
 ##### CRUD de destinos
 Route::get('/destinos', function () {
     //obtenemos listado de destinos
