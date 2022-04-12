@@ -125,6 +125,7 @@ Route::get('/destinos', function () {
 
    //inner join
     $destinosJ= DB::table('destinos')
+        ->orderBy('destNombre', 'asc')
         ->join('regiones','destinos.idRegion','=','regiones.idRegion')
         ->select('destinos.*','regiones.regNombre')
         ->get();
