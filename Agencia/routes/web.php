@@ -105,15 +105,23 @@ Route::get('/region/delete/{id}', function ($id)
     /*DB::delete( 'DELETE FROM regiones
                     WHERE idRegion = :idRegion',
                 [ $id]);*/
-    DB::table('regiones')
-        ->where( 'idRegion', $id )
-        ->delete();
-    return redirect('/regiones')
-        ->with(['mensaje'=>'Región Eliminada correctamente']);
+                $region = DB::table('regiones')
+                ->where( 'idRegion', $id )
+                ->first();
+    return view('/regionDelete', ['region' => $region]);
 });
 
 
-
+Route::post('/region/destroy', function () {
+ 
+    $idRegion = request()->idRegion;
+    $regNombre = request()->regNombre;
+    DB::table('regiones')
+        ->where( 'idRegion', $idRegion )
+        ->delete();
+    return redirect('/regiones')
+        ->with(['mensaje'=>'Region '.$regNombre.' eliminada correctamente']);
+});
 
 
 ##### CRUD de destinos
@@ -159,14 +167,18 @@ Route::post('destino/create', function () {
                 [ $destNombre ]
             );*/
             DB::table('destinos')
-            ->insert([ 'destNombre'=>$destNombre , 'idRegion'=>$idRegion , 'destPrecio'=>$destPrecio ,'destAsientos'=>$destAsientos ,'destDisponibles'=>$destDisponibles]);
+            ->insert([ 'destNombre'=>$destNombre ,
+             'idRegion'=>$idRegion , 
+             'destPrecio'=>$destPrecio ,
+             'destAsientos'=>$destAsientos ,
+             'destDisponibles'=>$destDisponibles]);
     return redirect('/destinos')
                 ->with(['mensaje'=>'Destino  ' .$destNombre. ' agregado correctamente']);
 
 });
 
 Route::get('/destino/edit/{id}', function ($id) {
-    
+   // trae datos del destino
 $destino = DB::table('destinos')->where('idDestino', $id)
 ->join('regiones','destinos.idRegion','=','regiones.idRegion')
 ->select('destinos.*','regiones.*')
@@ -179,7 +191,7 @@ return view('destinoEdit', [ 'destino' => $destino , 'regiones'=>$regionesd]);
 });
 
 Route::post('/destino/update', function () {
-
+// actualiza destino
     $idDestino = request()->idDestino;
     $destNombre = request()->destNombre;
     $idRegion = request()->idRegion;
@@ -197,18 +209,24 @@ Route::post('/destino/update', function () {
 
 Route::get('/destino/delete/{id}', function ( $id )
 {
+    // trae el destino a eliminar
    $destino = DB::table('destinos as d')
                ->join('regiones as r','d.idRegion','=','r.idRegion')
                ->select('d.*','r.*')
                ->where( 'd.idDestino', $id )
                ->first();
 
+
+               //retorna vista de eliminacion con array
     return view('/destinoDelete', [ 'destino' => $destino ]);
 });
 Route::post('/destino/destroy', function ()
 {
+
+    // elimina destino
     $idDestino = request()->idDestino;
     $destNombre = request()->destNombre;
+   
     DB::table('destinos')
         ->where( 'idDestino', $idDestino )
         ->delete();
