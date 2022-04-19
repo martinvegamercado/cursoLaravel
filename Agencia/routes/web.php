@@ -195,15 +195,24 @@ Route::post('/destino/update', function () {
         ->with(['mensaje'=>'Destino  ' .$destNombre. ' Modificado correctamente']);
 });
 
-Route::get('/destino/delete/{id}', function ($id)
-{    
-    //borrar region
-    /*DB::delete( 'DELETE FROM regiones
-                    WHERE idRegion = :idRegion',
-                [ $id]);*/
+Route::get('/destino/delete/{id}', function ( $id )
+{
+   $destino = DB::table('destinos as d')
+               ->join('regiones as r','d.idRegion','=','r.idRegion')
+               ->select('d.*','r.*')
+               ->where( 'd.idDestino', $id )
+               ->first();
+
+    return view('/destinoDelete', [ 'destino' => $destino ]);
+});
+Route::post('/destino/destroy', function ()
+{
+    $idDestino = request()->idDestino;
+    $destNombre = request()->destNombre;
     DB::table('destinos')
-        ->where( 'idDestino', $id )
+        ->where( 'idDestino', $idDestino )
         ->delete();
     return redirect('/destinos')
-        ->with(['mensaje'=>'Destino Eliminado Correctamente']);
+        ->with(['mensaje'=>'Destino '.$destNombre.' eliminado correctamente']);
+
 });
