@@ -22,10 +22,12 @@
                 <label for="idRegion">Región</label>
                 <select name="idRegion" id="idRegion"
                         class="form-control" required>
-                        <option value="{{$destino->idRegion}}">{{$destino->regNombre}}</option>"
+                       
                     @foreach ($regiones as $region)
-                    <option value="{{$region->idRegion}}">{{$region->regNombre}}</option>
+                    <option {{ ($region->idRegion == $destino->idRegion)?'selected':'' }}
+                        value="{{$region->idRegion}}">{{$region->regNombre}}</option>
                     @endforeach
+                    
                 </select>
             </div>
 

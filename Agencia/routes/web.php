@@ -169,7 +169,7 @@ Route::get('/destino/edit/{id}', function ($id) {
     
 $destino = DB::table('destinos')->where('idDestino', $id)
 ->join('regiones','destinos.idRegion','=','regiones.idRegion')
-->select('destinos.*','regiones.regNombre')
+->select('destinos.*','regiones.*')
 ->first();;
 
 
