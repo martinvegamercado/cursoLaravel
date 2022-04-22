@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CategoriaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +26,9 @@ use App\Http\Controllers\MarcaController;
 
 
 Route::get('/marcas',[MarcaController::class,'index']);
+
+
+####crud de categorias ######
+
+
+Route::get('/categorias', [CategoriaController::class, 'index']);

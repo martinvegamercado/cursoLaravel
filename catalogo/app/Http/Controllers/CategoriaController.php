@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Marca;
-
-class MarcaController extends Controller
+use App\Models\Categoria;
+class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +13,11 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //obtener el listado de marcas y retornar la vista
-           // $marcas = Marca::all();
+        //Obtener el listado de categorias y devolver listado ordenado por nombre
 
-        //ordenado
-            $marcas = Marca::orderby('mkNombre')->get();
-        return view('marcas', ['marcas' => $marcas]);
+        $categorias = Categoria::orderby('catNombre','asc')->get();
+
+        return view('categorias',['categorias'=>$categorias]);
     }
 
     /**
