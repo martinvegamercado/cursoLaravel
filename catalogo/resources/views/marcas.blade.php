@@ -26,7 +26,7 @@
 
     <ul class="list-group">
 @foreach ($marcas as $marca)
-    
+
 
         <li class="col-md-6 list-group-item list-group-item-action d-flex justify-content-between">
             <div class="col">
@@ -45,5 +45,6 @@
         </li>
         @endforeach
     </ul>
+{{ $marcas->links() }}
 
 @endsection

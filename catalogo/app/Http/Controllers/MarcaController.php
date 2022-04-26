@@ -17,8 +17,8 @@ class MarcaController extends Controller
         //obtener el listado de marcas y retornar la vista
            // $marcas = Marca::all();
 
-        //ordenado
-            $marcas = Marca::orderby('mkNombre')->get();
+        //ordenado y paginado con Paginate() y biitstrap
+            $marcas = Marca::paginate('7');
         return view('marcas', ['marcas' => $marcas]);
     }
 
@@ -29,10 +29,24 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        //
+        return view('marcaCreate');
     }
 
-    /**
+    private function validateForm(Request $request)
+    {
+
+     //validate metodo de laravel
+        $request -> validate(
+
+        ['mkNombre'=> 'required|min:5|max:50' ],
+
+        ['mkNombre.required'=>'El Campo es Obligatorio.',
+        'mkNombre.min'=>'Minimo 5 Caracteres',
+        'mkNombre.max'=>'Maximo 50 caracteres'
+        ]);
+
+    }
+     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,7 +54,18 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // traigo dato
+        $mkNombre = $request->mkNombre;
+        //valido y muestro errores
+        $this -> validateForm($request);
+        //agrego dato instancio y asigno y guardo
+
+        $Marca = new Marca;
+        $Marca->mkNombre = $mkNombre;
+        $Marca->save();
+
+        //retorno con flashing
+        return redirect('/marcas')->with(['mensaje'=> 'Marca:  ' . $mkNombre. ' Agregada Correctamente']);
     }
 
     /**
