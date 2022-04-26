@@ -27,8 +27,23 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        //
+        return view('categoriaCreate');
     }
+    //validacion
+
+    private function validateForm(Request $request)
+
+    {
+        $request->validate(
+            //reglas de validacion
+            ['catNombre'=> 'required|min:5|max:50' ],
+            ['catNombre.required'=>'El Campo es Obligatorio.',
+            'catNombre.min'=>'Minimo 5 Caracteres',
+            'catNombre.max'=>'Maximo 50 caracteres'
+        ]);
+
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +53,20 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // traigo dato
+        $catNombre = $request->catNombre;
+
+        //valido datos
+        $this->validateForm($request);
+
+        //agregar dato y guardo
+        $Categoria = new Categoria;
+        $Categoria->catNombre = $catNombre;
+        $Categoria->save();
+        //retorno vista con flashing
+
+        return redirect('/categorias')->with(['mensaje'=> 'Categoria:  ' . $catNombre. ' Agregada Correctamente']);
+
     }
 
     /**

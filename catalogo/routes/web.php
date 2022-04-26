@@ -35,5 +35,7 @@ Route::post('/marca/store', [MarcaController::class, 'store']);
 
 Route::get('/categorias', [CategoriaController::class, 'index']);
 
+Route::get('/categoria/create', [CategoriaController::class, 'create']);
 
+Route::post('/categoria/store', [CategoriaController::class, 'store']);
 
