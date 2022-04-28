@@ -87,7 +87,12 @@ class MarcaController extends Controller
      */
     public function edit($id)
     {
-        //
+        //busco la marca
+      //  $Marcas =  Marca::where('idMarca',$id)->first();
+        $Marca =  Marca::find($id);
+
+        //retorno la vista con el arreglo
+        return $Marca;
     }
 
     /**
