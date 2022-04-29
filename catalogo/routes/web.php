@@ -44,3 +44,6 @@ Route::get('/categoria/create', [CategoriaController::class, 'create']);
 
 Route::post('/categoria/store', [CategoriaController::class, 'store']);
 
+Route::get('/categoria/edit/{id}', [CategoriaController::class, 'edit']);
+
+Route::patch('/categoria/update',[CategoriaController::class, 'update']);

@@ -88,7 +88,10 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $Categoria = Categoria::find($id);
+
+        return view('catagoriaEdit', ['Categoria' => $Categoria]);
     }
 
     /**
@@ -98,9 +101,21 @@ class CategoriaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // traigo el nombre de la categoria
+        $catNombre = $request->catNombre;
+        //valido reglas
+        $this->validateForm($request);
+        // busco la categoria a modificar
+        $Categoria = Categoria::find($request->idCategoria);
+        // asigno valores
+        $Categoria->catNombre = $catNombre;
+        //guardo
+        $Categoria->save();
+
+        //retorno vista con mensaje
+        return redirect('/categorias')->with(['mensaje'=> 'Categoria:  ' . $catNombre. ' Modificada Correctamente']);
     }
 
     /**
