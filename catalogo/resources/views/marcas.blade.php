@@ -1,7 +1,7 @@
 @extends('layouts.plantilla')
 @section('contenido')
 
-    <h1>Panel de administración de marcas</h1>
+    <h1>Panel de administración de marcas hola</h1>
 
     @if( session('mensaje') )
         <div class="alert alert-success">

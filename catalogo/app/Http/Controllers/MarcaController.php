@@ -18,7 +18,7 @@ class MarcaController extends Controller
            // $marcas = Marca::all();
 
         //ordenado y paginado con Paginate() y biitstrap
-            $marcas = Marca::paginate('7');
+            $marcas = Marca::paginate('5');
         return view('marcas', ['marcas' => $marcas]);
     }
 
@@ -92,7 +92,7 @@ class MarcaController extends Controller
         $Marca =  Marca::find($id);
 
         //retorno la vista con el arreglo
-        return $Marca;
+        return view('marcaEdit',['Marca' => $Marca]);
     }
 
     /**
@@ -102,9 +102,20 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $mkNombre = $request->mkNombre;
+       // $idMarca = $request->idMarca;
+        $this->validateForm($request);
+        // obtengo los datos
+        $Marca = Marca::find($request->idMarca);
+        //asigno
+        $Marca->mkNombre = $mkNombre;
+        //guardo
+        $Marca->save();
         //
+
+        return redirect('/marcas')->with(['mensaje'=> 'Marca:  ' . $mkNombre. ' Modificada Correctamente']);
     }
 
     /**

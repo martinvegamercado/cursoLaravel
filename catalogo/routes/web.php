@@ -33,6 +33,8 @@ Route::post('/marca/store', [MarcaController::class, 'store']);
 
 Route::get('/marca/edit/{id}', [MarcaController::class, 'edit']);
 
+Route::patch('/marca/update',[MarcaController::class, 'update']);
+
 ####crud de categorias ######
 
 

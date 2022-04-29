@@ -15,7 +15,7 @@ class CategoriaController extends Controller
     {
         //Obtener el listado de categorias y devolver listado ordenado por nombre
 
-        $categorias = Categoria::orderby('catNombre','asc')->get();
+        $categorias = Categoria::paginate(5);
 
         return view('categorias',['categorias'=>$categorias]);
     }
