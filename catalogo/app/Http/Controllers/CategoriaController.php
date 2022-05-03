@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Producto;
 class CategoriaController extends Controller
 {
     /**
@@ -69,16 +70,6 @@ class CategoriaController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -118,14 +109,57 @@ class CategoriaController extends Controller
         return redirect('/categorias')->with(['mensaje'=> 'Categoria:  ' . $catNombre. ' Modificada Correctamente']);
     }
 
+//validar categoria producto
+
+private function productoPorCategoria( $idCategoria )
+{
+    # code...
+    $check = Producto::firstWhere('idCategoria', $idCategoria);
+
+    return $check;
+}
+
+
+
+
+
+/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function confirm($id)
+    {
+        //obtenemos la categoria
+      $Categoria = Categoria::find($id);
+         //si NO hay productos de ese marca
+         if(!$this->productoPorCategoria($id))
+         {
+            //retorno vista con el campo
+            return view('categoriaDelete',['Categoria'=>$Categoria]);
+         }
+         //redirección con mensaje que no se puede eliminar
+         return redirect('/categorias')
+         ->with([
+            'warning'=>'warning',
+            'mensaje'=>'No se puede eliminar la categoria: '.$Categoria->catNombre.' ya que tiene productos relacionados.'
+
+                ]);
+        //
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        Categoria::destroy($request->idCategoria);
+
+        return redirect('/categorias')
+        ->with(['mensaje'=>'Categoria: '.$request->catNombre.' eliminada correctamente.']);
     }
 }

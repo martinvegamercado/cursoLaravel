@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Marca;
-
+use App\Models\Producto;
 class MarcaController extends Controller
 {
     /**
@@ -108,18 +108,33 @@ class MarcaController extends Controller
         return redirect('/marcas')->with(['mensaje'=> 'Marca:  ' . $mkNombre. ' Modificada Correctamente']);
     }
 
-/**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    private function productoPorMarca( $idMarca )
     {
-        //
+        //$check = Producto::where('idMarca', $idMarca)->first();
+        $check = Producto::firstWhere('idMarca', $idMarca);
+        //$check = Producto::where('idMarca', $idMarca)->count();
+        return $check;
     }
 
+    public function confirm($id)
+    {
+        //obtenemos datos de la marca
+        $Marca = Marca::find($id);
 
+        //si NO hay productos de ese marca
+        if( !$this->productoPorMarca($id) )
+        {
+            //retornamos vista de confirmación
+            return view('marcaDelete', [ 'Marca'=>$Marca ]);
+        }
+        //redirección con mensaje que no se puede eliminar
+        return redirect('/marcas')
+            ->with(
+                [
+                    'warning'=>'warning',
+                    'mensaje'=>'No se puede eliminar la marca: '.$Marca->mkNombre.' ya que tiene productos relacionados.'
+                ]);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -127,8 +142,15 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( Request $request )
     {
-        //
+        /*
+         * $Marca = Marca::find($request->idMarca);
+            $Marca->delete();
+         */
+        Marca::destroy( $request->idMarca );
+        //retorno con flashing de mensaje ok
+        return redirect('/marcas')
+            ->with(['mensaje'=>'Marca: '.$request->mkNombre.' eliminada correctamente.']);
     }
 }
