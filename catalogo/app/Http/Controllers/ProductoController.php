@@ -97,7 +97,6 @@ class ProductoController extends Controller
         $this->validarForm($request);
 
 
-
         //
     }
 
