@@ -16,7 +16,7 @@
             </a>
         </div>
         <div class="col-1 text-end">
-            <a href="" class="btn btn-outline-secondary">
+            <a href="/producto/create" class="btn btn-outline-secondary">
                 <i class="bi bi-plus-square"></i>
                 Agregar
             </a>
@@ -35,8 +35,8 @@
             <h2>{{ $Producto->prdNombre }}</h2>
             <span class="precio3">$ {{ $Producto->prdPrecio }}</span>
             <p>
-                Marca: {{ $Producto->mkNombre }} <br>
-                Categoría: {{ $Producto->catNombre }} <br>
+                Marca: {{ $Producto->getMarca->mkNombre }} <br>
+                Categoría: {{ $Producto->getCategoria->catNombre }} <br>
                 {{ $Producto->prdDescripcion }}
             </p>
         </div>
