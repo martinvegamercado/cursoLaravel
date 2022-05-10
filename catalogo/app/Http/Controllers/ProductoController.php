@@ -55,7 +55,6 @@ class ProductoController extends Controller
                 'idMarca' => 'required|integer',
                 'idCategoria' => 'required|integer',
                 'prdDescripcion' => 'required|min:2|max:150',
-                'prdStock' => 'required|integer|min:0',
                 'prdImagen' => 'mimes:jpg,jpeg,png,gif,svg,webp|max:2048'
             ],
         [
@@ -72,18 +71,30 @@ class ProductoController extends Controller
             'prdDescripcion.required'=>'Complete el campo Descripción.',
             'prdDescripcion.min'=>'Complete el campo Descripción con al menos 3 caractéres',
             'prdDescripcion.max'=>'Complete el campo Descripción con 150 caractéres como máxino.',
-            'prdStock.required'=>'Complete el campo Stock.',
-            'prdStock.integer'=>'Complete el campo Stock con un número entero.',
-            'prdStock.min'=>'Complete el campo Stock con un número positivo.',
             'prdImagen.mimes'=>'Debe ser una imagen.',
             'prdImagen.max'=>'Debe ser una imagen de 2MB como máximo.'
         ]
     );
-
-
-
     }
+    //
+    private function subirImagen(Request $request)
+    {
+        // si no enviaron imagen 'noDisponible.png'
+        $prdImagen = 'noDisponible.png';
 
+        //si enviaron un archivo una imagen
+        if($request->file('prdImagen'))
+        {
+            //renombramos archivo
+            $extension = $request->file('prdImagen')->extension();
+            $prdImagen = time().'.'.$extension;
+            //subir archivo
+            $request->file('prdImagen')
+            ->move( public_path('productosimagenes'), $prdImagen );
+        }
+
+    return $prdImagen;
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -95,9 +106,22 @@ class ProductoController extends Controller
     {
         //validamos
         $this->validarForm($request);
+        //subir imagen
+       $prdImagen =  $this->subirImagen($request);
+        //instanciar
+        $Producto = New Producto;
+        $Producto->prdNombre = $request->prdNombre;
+        $Producto->prdPrecio = $request->prdPrecio;
+        $Producto->idMarca = $request->idMarca;
+        $Producto->idCategoria = $request->idCategoria;
+        $Producto->prdDescripcion = $request->prdDescripcion;
+        $Producto->prdImagen = $prdImagen;
+        $Producto->prdActivo = 1;
+        $Producto->save();
 
+        return redirect('/productos')
+        ->with( [ 'mensaje'=>'Producto: '.$request->prdNombre.' agregado correctamente.' ] );
 
-        //
     }
 
     /**

@@ -29,7 +29,7 @@
                 <select class="form-select" name="idMarca" id="idMarca">
                     <option value="">Seleccione una marca</option>
                     @foreach ($marcas as $marca )
-                    <option  value="{{ $marca->idMarca}}" {{ old('idMarca') == $marca->idMarca ? 'selected' : '' }} >{{ $marca->mkNombre}}</option>
+                    <option  {{ old('idMarca') == $marca->idMarca ? 'selected' : '' }}  value="{{ $marca->idMarca}}" >{{ $marca->mkNombre}}</option>
                     @endforeach
                 </select>
             </div>
@@ -39,7 +39,7 @@
                 <select class="form-select" name="idCategoria" id="idCategoria">
                     <option value="">Seleccione una categoría</option>
                     @foreach ($categorias as $categoria )
-                    <option value="{{ $categoria->idCategoria}}" {{ old('idCategoria') == $categoria->idCategoria ? 'selected' : '' }} >{{ $categoria->catNombre}}</option>
+                    <option {{ old('idCategoria') == $categoria->idCategoria ? 'selected' : '' }}  value="{{ $categoria->idCategoria}}" >{{ $categoria->catNombre}}</option>
                     @endforeach
                 </select>
             </div>
@@ -50,10 +50,6 @@
                  id="prdDescripcion">{{old('prdDescripcion')}}</textarea>
             </div>
 
-            <div class="form-group mb-4">
-                <label for="prdStock">Stock del Producto</label>
-                <input type="number" name="prdStock" class="form-control" id="prdStock" min="0"   value="{{ old('prdStock')}}">
-            </div>
 
             <div class="custom-file mt-1 mb-4">
                 <input type="file" name="prdImagen"  class="custom-file-input" id="customFileLang" lang="es">
