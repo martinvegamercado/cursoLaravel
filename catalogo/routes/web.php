@@ -65,3 +65,7 @@ Route::get('/productos', [ ProductoController::class, 'index' ]);
 Route::get('/producto/create', [ ProductoController::class, 'create' ]);
 
 Route::post('/producto/store', [ProductoController::class, 'store']);
+
+Route::get('/producto/edit/{id}', [ProductoController::class, 'edit']);
+
+Route::patch('/producto/update', [ProductoController::class, 'update']);
