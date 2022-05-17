@@ -131,16 +131,7 @@ class ProductoController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Producto $producto)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -191,14 +182,31 @@ class ProductoController extends Controller
         ->with( [ 'mensaje'=>'Producto: '.$request->prdNombre.' Modificado correctamente.' ] );
     }
 
+
+ /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Producto  $producto
+     * @return \Illuminate\Http\Response
+     */
+    public function confirm($id)
+    {
+
+        $Producto = Producto::with(['getMarca' , 'getCategoria'])->find($id);
+        return view('productoDelete' ,['Producto'=>$Producto]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Producto $producto)
+    public function destroy(Request $request)
     {
-        //
+        Producto::destroy($request->idProducto);
+
+        return redirect('/productos')
+        ->with(['mensaje'=>'Producto: '.$request->prdNombre.' eliminado correctamente.']);
     }
 }
