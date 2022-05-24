@@ -16,17 +16,19 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
 
             $table->mediumIncrements('idProducto');
-            $table->string('prdNombre',75);
-            $table->float('prdPrecio',8,2);
-            $table->tinyInteger('idMarca');
-            $table->tinyInteger('idCategoria');
+            $table->string('prdNombre', 75);
+            $table->float('prdPrecio', 8, 2);
+            $table->tinyInteger('idMarca')->unsigned();
+            $table->tinyInteger('idCategoria')->unsigned();
             $table->text('prdDescripcion');
-            $table->string('prdImagen',45);
+            $table->string('prdImagen', 45);
             $table->boolean('prdActivo')->default(1);
-          //foren key
-            $table->foreign('idMarca')->references('idMarca')->on('marcas');
-            $table->foreign('idCategoria')->references('idCategoria')->on('categorias');
-            // $table->timestamps();
+            $table->foreign('idMarca')
+                            ->references('idMarca')
+                                ->on('marcas');
+            $table->foreign('idCategoria')
+                            ->references('idCategoria')
+                                ->on('categorias');
         });
     }
 
